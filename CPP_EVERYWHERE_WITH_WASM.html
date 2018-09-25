@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>C++ Everywhere with WebAssembly</title>
+
+    <meta name="description" content="What modern C++ has to offer to the web !">
+    <meta name="author" content="Damien Buhl (alias daminetreg)">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <!--<script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>-->
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h2>C++ Everywhere with</h2>
+          <h1>WebAssembly</h1>
+          <!--
+          <h3><span style="color:#13DAEC;" >N</span>ot a C<span style="color:#13DAEC;" >++</span> Package <span style="color:#13DAEC;" >M</span>anager</h3>
+          -->
+          <p>
+            <small>Damien Buhl (alias daminetreg) at <a href="https://nxxm.github.io/">nxxm.github.io</a></small>
+          </p>
+        </section>
+
+        <section>
+          <section>
+            <h2>WebAssembly</h2>
+
+            <ul>
+              <li>Binary instruction format</li>
+              <li>Stack based vm</li>
+              <li>Enables C++ web <span style="color:#13DAEC;" >browser</span> &amp; <span style="color:#13DAEC;" >server</span> apps</li>
+            </ul>
+
+          </section>
+          <section>
+            <h2>v1.0 available everywhere</h2>
+            <p>
+              <img class="plain" src="gfx/edge.svg" width="96px">
+              <img class="plain" src="gfx/firefox.svg" width="96px">
+              <img class="plain" src="gfx/chrome.svg" width="96px">
+              <img class="plain" src="gfx/safari_96x96.png" width="96px">
+              <img class="plain" src="gfx/nodejs_logo.svg" width="192px">
+            </p>
+
+          </section>
+          <section>
+            <h2>WebAssembly Primer</h2>
+            <p>
+            </p>
+
+          </section>
+          <section>
+            <h2>Portable Binary instructions</h2>
+
+            <ul>
+              <li>Small files</li>
+              <li>Fast decoding</li>
+              <li>Reduced memory usage</li>
+              <li>asm.js &amp; PNaCl synthesis</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Binary format</h2>
+
+            <ul>
+              <li>Simple type set</li>
+              <li>Fast decoding</li>
+              <li>Reduced memory usage</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>No more code pallets lifting</h2>
+            <p>
+              <img src="gfx/code_reuse.jpeg" style="max-width: 80vw; max-height: 50vh; width:auto; height:auto;"/>
+            </p>
+          </section>
+        </section>
+
+        <!-- Example of nested vertical slides -->
+        <section>
+          <section>
+            <h2>C++ Builds: Arts and Crafts</h2>
+            <ul>
+              <li>Meta Build Systems failed simplifying builds.</li>
+              <li>Continuous Integration config files : Jenkinsfile, Travis-CI, AppVeyor.</li>
+              <li>Hours of development time lost in writing recipes.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>C++ Builds: Industrializing and scaffolding</h2>
+            <ul>
+              <li>Let's use that time to write code.</li>
+              <li>The Web did it.</li>
+              <li>C++ can do it too.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>2 hard realizations and 1 dream</h2>
+            <ul>
+              <li>The C++ ecosystem is fragmented.</li>
+              <li>Nobody wants yet-another-config file.</li>
+              <li><b>The Dream</b> that code is self-sufficient.</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>So... what is nxxm ?</h1>
+            <p>
+              More or less a <strong>Compiler</strong> connected to <a href="#">github.com</a>.
+            </p>
+          </section>
+          <section>
+            <h1>So... it's purpose ?</h1>
+            <p>
+              <a href="#">Dependency</a> &amp; <a href="#">Secure upgrade</a> management via <a href="#">github.com</a>.
+            </p>
+          </section>
+          <section>
+            <h2>Key Benefits</h2>
+            <ul>
+              <li>Easy code reuse.</li>
+              <li>Supports any build system.</li>
+              <li>Perfectly integrated in development tools.</li>
+              <li>Builds by convention.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Key Features</h2>
+            <ul>
+              <li>Zero installation needed.</li>
+              <li>Zero config file: <span style="color:#13DAEC;" >#include</span> scanning.</li>
+              <li>Zero dependency store: relies on github.com.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Killer Features</h2>
+            <ul>
+              <li>Standalone project directory.</li>
+              <li>CMake, Travis-CI &amp; AppVeyor config generation.</li>
+              <li>Software upgrade management.</li>
+              <li>Simplistic UI to get started.</li>
+              <li>Visual Studio Code Integration.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Demo</h2>
+            <ul>
+              <li>Let's write an hello-world.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>nxxm == merge(inglued + headerizer)</h2>
+            <p>
+          <pre><code class="hljs" data-trim contenteditable>
+#include &lt;nxxm/github.com&gt;
+
+#include &lt;boost/algorithm/string/predicate.hpp&gt;
+  // Download &amp; dependency registration : cmake, ci...
+
+void on_login(std::string username) {
+  using namespace boost::algorithm;
+
+  if starts_with(username, &quot;😇&quot;) {
+    let_him_in();
+  }
+}
+          </code></pre>
+            </p>
+          </section>
+        </section>
+
+        
+        <section>
+          <section>
+            <h2>Economic Model</h2>
+            <div>
+            <table style="font-size: 0.4em;">
+              <thead>
+                <tr>
+                  <th align="center">Community</th>
+                  <th align="center">Pro</th>
+                  <th align="center">Enterprise</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td align="center" style="vertical-align: middle;">
+                    Base Features
+                  </td>
+                  <td  style="vertical-align: middle;">
+                    <ul>
+                      <li>Private repositories on github.com</li>
+                      <li>Faster build: Precompiled Headers + Precompiled header online store for common deps and platforms.</li>
+                    </ul>
+                  </td>
+                  <td  style="vertical-align: middle;">
+                    <ul>
+                      <li>Support for github enterprise</li>
+                      <li>Support for TFS servers</li>
+                      <li>Support for github enterprise</li>
+                      <li>Local Precompiled Header Dependency mirror server for custom targets.</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" >Free</td>
+                  <td align="center" >7€ / month by user</td>
+                  <td align="center" >5000€ / year for 20 User seat pack</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </section>
+          <section>
+            <h2>Copying npmjs</h2>
+            <p>
+              <img src="gfx/npm-economic-model.png" style="max-width: 80vw; max-height: 50vh; width:auto; height:auto;"/>
+            </p>
+          </section>
+
+          <section>
+            <h2>Our market</h2>
+            <p style="font-size:0.4em;">
+              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
+            </p>
+          </section>
+          <section>
+            <h2>Dependencies</h2>
+            <p>
+            Describe something you need to do regularly when writing C++ code that you wish could be easier in some way?
+            </p>
+            <p>
+              <img src="gfx/cpp_needs_package_management.png" style="max-width: 70vw; max-height: 30vh; width:auto; height:auto;"/>
+            </p>
+            <p style="font-size:0.4em;">
+              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
+            </p>
+          </section>
+          <section>
+            <h2>Why not just dependencies ?</h2>
+            <p  style="font-size:0.4em;">Upgrade management and easy-rollout is a killer for the main development field.</p>
+            <p>
+              <img src="gfx/cpp_project_fields.png" style="max-width: 70vw; max-height: 40vh; width:auto; height:auto;"/>
+            </p>
+            <p style="font-size:0.4em;">
+              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
+            </p>
+          </section>
+          <section>
+            <h2>The rise</h2>
+            <p  style="font-size:0.45em;">Percolating in other languages.</p>
+            <p>
+              <img src="gfx/cpp_other_languages.png" style="max-width: 70vw; max-height: 40vh; width:auto; height:auto;"/>
+            </p>
+            <p style="font-size:0.4em;">
+              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
+            </p>
+          </section>
+          <section>
+            <h2>Do they have money ?</h2>
+            <p  style="font-size:0.45em;">They do.</p>
+            <p>
+              <img src="gfx/cpp_dev_use.png" style="max-width: 70vw; max-height: 40vh; width:auto; height:auto;"/>
+            </p>
+            <p style="font-size:0.4em;">
+              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
+            </p>
+          </section>
+          <section>
+            <h2>We can do it.</h2>
+            <p>
+              <ul>
+              <li>npm, Inc. is a company founded in 2014.  Its executive team is:</li>
+                <ul>
+                  <li><p>Isaac Z. Schlueter, CEO</p></li>
+                  <li><p>Laurie Voss, COO</p></li>
+                  <li><p>CJ Silverio, CTO</p></li>
+                </ul>
+              </ul>
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Roadmap</h2>
+            <p>
+              Release 1 planned by Mid of June on the basis of inglued.
+            </p>
+            <p>
+              The Roadmap is easy and clear, there is nothing <b>unknown</b>. <a href="https://git.lecbna.org/daminetreg/inglued/blob/develop/ROADMAP.md" target="_blank">See here</a>.
+            </p>
+          </section>
+          <section>
+            <h2>nxxm needs your help</h2>
+            <ul>
+              <li>We can release early and fast: Mid of June.</li>
+              <li>We can dogfood the tool then : </li>
+              <ul>
+                <li>Looking for contract customers: 20%.</li>
+                <li>contract work using the tool: 40%.</li>
+                <li>improve the tool: 40%.</li>
+              </ul>
+              <li>While no-contract we can build-up slight.li further.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>It's what the devs want</h2>
+            <ul>
+              <li>There already is 7 stars on inglued, with <b>zero-marketing.</b></li>
+              <li>Neither Hunter, Conan nor Vcpkg are really getting used.</li>
+              <li>Because it's easy &amp; programming language knowledge suffice.</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>You are welcome</h2>
+          <p>
+            This is a starting point for cashing-in.
+          </p>
+          <p>
+            It is the WebAssembly deps manager...
+          </p>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/search/search.js', async: true },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
