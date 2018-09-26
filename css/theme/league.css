@@ -164,8 +164,8 @@ body {
 .reveal pre code {
   display: block;
   padding: 5px;
-  overflow: auto;
-  max-height: 400px;
+  overflow: hidden;
+/*  max-height: 400px;*/
   word-wrap: normal; }
 
 .reveal table {
