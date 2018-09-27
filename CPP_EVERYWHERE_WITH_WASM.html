@@ -45,12 +45,31 @@
         width: 100%;
         height: auto;
     }
+
+    .logo {
+      position: absolute;
+      top: 3em;
+      right: 3em;
+    }
+
+    .qrcode {
+      position: absolute;
+      top: 3em;
+      left: 3em;
+    }
     </style>
 
 
   </head>
 
   <body>
+    <div class="qrcode">
+      <img class="plain" width="auto" height="100rem" src="gfx/qrcode-nxxm.png">
+    </div>
+    <div class="logo">
+      <img class="plain" width="auto" height="100rem" src="gfx/logo_big.png"  >
+      <img style="opacity: 0.8;" width="auto" height="100rem" src="gfx/cppcon.png"  >
+    </div>
 
     <div class="reveal">
 
@@ -62,6 +81,10 @@
           <!--
           <h3><span style="color:#13DAEC;" >N</span>ot a C<span style="color:#13DAEC;" >++</span> Package <span style="color:#13DAEC;" >M</span>anager</h3>
           -->
+          <p>
+            <img class="plain" width="auto" height="200rem" src="gfx/logo_big.png"  >
+          </p>
+          <h4>GitHub Powered, WebAssembly Ready, C++ dependencies &amp; upgrade manager</h4>
           <p>
             <small>Damien Buhl (alias daminetreg) at <a href="https://nxxm.github.io/">nxxm.github.io</a></small>
           </p>
@@ -356,17 +379,7 @@ app.listen(80);</code></pre>
           </section>
 
           <section>
-            <h2>REST in C++</h2>
-          <pre style="font-size:0.4em;"><code class="cpp">app.GET(&quot;/user&quot;, [](session&amp;&amp; session, std::size_t id) { 
-  session.response.write(&quot;user &quot;s + std::to_string(id));
-}); 
-
-app.listen(80);</code></pre>
-            <p class="fragment">Will match : <span style="color:#13DAEC;" >/user/43</span> and only valid unsigned integer values</p>
-          </section>
-
-          <section>
-            <h2>REST url argument parser</h2>
+            <h2>REST argument parser in C++</h2>
           <pre style="font-size:0.4em;"><code class="cpp">namespace qi = boost::spirit::qi;
 namespace ct = boost::callable_traits;
 using namespace boost::mp11;
@@ -393,11 +406,87 @@ void GET(const std::string& route, F&& functor) {
 }</code></pre>
           </section>
 
+        <section>
+          <h2>Let's see the following in action</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">app.GET(&#x22;/add&#x22;, [&#x26;](bete::session&#x26;&#x26; session, 
+    std::string name, size_t min, size_t max, size_t avg) { 
+
+  datamodel-&#x3E;benchmarks-&#x3E;push_back({name, min, max, avg});
+
+  session.response.write(&#x22;Added : &#x22;s + name 
+      + &#x22;with min=&#x22;s + std::to_string(min) 
+      + &#x22;, max=&#x22;s + std::to_string(max) 
+      + &#x22;, avg=&#x22;s + std::to_string(avg) + &#x22;.&#x22;
+      );
+
+});
+
+app.listen(80);</code></pre>
+          <p class="fragment">
+          <a href="http://127.0.0.1:8787/add/added_via_REST_service/1/2/4" target="_blank">GET /add/added_via_REST_service/1/2/4</a>
+          </p>
         </section>
 
+        <section>
+          <h2>But adding to what ?</h2>
+          <ul>
+            <li>To an Observable datatype</li>
+            <li>Simulating a bit of Aspect Oriented Programming in C++</li>
+          </ul>
+        </section>
 
         <section>
+          <h2>belle::vue::observable</h2>
+<pre style="font-size:0.4em;"><code class="cpp">template&#x3C;class T&#x3E;
+struct observable {
+  struct proxy {
 
+    // ...
+
+    T * proxied; 
+      
+    ~proxy () {
+      for (auto&#x26; obs : observers_) { 
+        obs(*proxied); 
+      }
+      
+    }
+
+  };
+
+  proxy operator -&#x3E; () {
+     return proxy (observers_, std::addressof(proxied));
+  }
+
+  T* operator -&#x3E; () const {
+     return &#x26;proxied;
+  }
+
+  // ...
+};</code></pre> 
+      </section>
+
+      <section>
+        <h2>Let's define an observable datamodel</h2>
+        <pre style="font-size:0.4em;"><code class="cpp">struct benchmark {
+  std::string name{};
+  size_t min{};
+  size_t max{};
+  size_t avg{};
+};
+
+struct datamodel_t {
+  std::vector&#x3C;benchmark&#x3E; benchmarks;
+};
+
+BELLE_VUE_OBSERVABLE(benchmark, name, min, max, avg);
+BELLE_VUE_OBSERVABLE(datamodel_t, benchmarks);</code></pre>
+
+      <p class="fragment">To record WebAssembly function calls benchmarks.</p>
+      </section>
+    </section>
+
+      <section>
           <section>
             <h1>Performance Measurement</h1>
           </section>
@@ -407,277 +496,134 @@ void GET(const std::string& route, F&& functor) {
             <pre style="font-size:0.4em;"><code class="cpp">  void test_cpp() {
     auto element = belle::vue::get_element_by_id(&quot;insert_here&quot;);
     
-    std::string text = fmt::format(&quot;Computing the WebAssembly answer {:d}&quot;, 43);
+    std::string text = fmt::format(&quot;Computing the WebAssembly answer {:d}&quot;, (43 * i));
     element.innerHTML(text);
   }</code></pre>
             <p>vs</p>
             <pre style="font-size:0.4em;"><code class="js">  function test_js() {
     var element = document.getElementById(&quot;insert_here&quot;);
 
-    var string_answer = &quot;Computing the Javascript answer &quot; + answer;
+    var string_answer = &quot;Computing the Javascript answer &quot; + (43 * i);
     element.innerHTML = string_answer; 
   }</code></pre>
 
+          <p class="fragment">
+          <a href="http://127.0.0.1:8181/02-observable-benchmarks/build/wasm-cxx17/bin/" target="_blank">Let's Measure</a>
+          </p>
           </section>
 
 
           <section>
-            <h2>Building Web Service</h2>
+            <h2>Performance gains by the WebAssembly &amp; C++ nature </h2>
             <ul>
-              <li></li>
-              <li>Highly Available Backends</li>
-              <li>People turn their webservices into C++ when they get victims of their success</li>
+              <li>8-bit bytes.</li>
+              <li>Addressable at a byte memory granularity.</li>
+              <li>Little-endian byte ordering.</li>
+              <li>IEEE 754-2008 32-bit and 64-bit floating point.</li>
             </ul>
           </section>
+          
           <section>
-            <h2>Why wouldn't we write Web Apps in C++ more often ?</h2>
-            <ul>
-              <li>Has a quite other expressiveness than TypeScript</li>
-              <li>Highly Available Backends</li>
-              <li>People turn their webservices into C++ when they get victims of their success</li>
-            </ul>
+            <h2>What if we abuse std::is_trivially_copyable ? </h2>
           </section>
-          <section>
-            <h2>C++ Builds: Industrializing and scaffolding</h2>
-            <ul>
-              <li>Let's use that time to write code.</li>
-              <li>The Web did it.</li>
-              <li>C++ can do it too.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>2 hard realizations and 1 dream</h2>
-            <ul>
-              <li>The C++ ecosystem is fragmented.</li>
-              <li>Nobody wants yet-another-config file.</li>
-              <li><b>The Dream</b> that code is self-sufficient.</li>
-            </ul>
-          </section>
-        </section>
 
-        <section>
           <section>
-            <h1>So... what is nxxm ?</h1>
-            <p>
-              More or less a <strong>Compiler</strong> connected to <a href="#">github.com</a>.
-            </p>
-          </section>
-          <section>
-            <h1>So... it's purpose ?</h1>
-            <p>
-              <a href="#">Dependency</a> &amp; <a href="#">Secure upgrade</a> management via <a href="#">github.com</a>.
-            </p>
-          </section>
-          <section>
-            <h2>Key Benefits</h2>
-            <ul>
-              <li>Easy code reuse.</li>
-              <li>Supports any build system.</li>
-              <li>Perfectly integrated in development tools.</li>
-              <li>Builds by convention.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Key Features</h2>
-            <ul>
-              <li>Zero installation needed.</li>
-              <li>Zero config file: <span style="color:#13DAEC;" >#include</span> scanning.</li>
-              <li>Zero dependency store: relies on github.com.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Killer Features</h2>
-            <ul>
-              <li>Standalone project directory.</li>
-              <li>CMake, Travis-CI &amp; AppVeyor config generation.</li>
-              <li>Software upgrade management.</li>
-              <li>Simplistic UI to get started.</li>
-              <li>Visual Studio Code Integration.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Demo</h2>
-            <ul>
-              <li>Let's write an hello-world.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>nxxm == merge(inglued + headerizer)</h2>
-            <p>
-          <pre><code class="hljs">
-#include &lt;nxxm/github.com&gt;
+            <h3>What if we abuse std::is_trivially_copyable ? </h3>
+            <pre style="font-size:0.4em;"><code class="cpp">template&#x3C;class Stream, class T&#x3E;
+inline void write(Stream&#x26; stream, const T&#x26; value) {
+  using decayed_T = typename std::decay_t&#x3C;T&#x3E;;
 
-#include &lt;boost/algorithm/string/predicate.hpp&gt;
-  // Download &amp; dependency registration : cmake, ci...
+  if constexpr (is_fusion_sequence_v&#x3C;decayed_T&#x3E;) {
+    for_each_member(value, [&#x26;stream](const auto&#x26; member_value){
+      write(stream, member_value); 
+    }); 
 
-void on_login(std::string username) {
-  using namespace boost::algorithm;
+  } else if constexpr (is_container_v&#x3C;decayed_T&#x3E;) {
+    wasmabi::write(stream, value.size());
+    std::for_each(value.begin(), value.end(), [&#x26;stream](auto&#x26; v) {
+      wasmabi::write(stream, v); 
+    });
+    
+  } else if constexpr(std::is_trivially_copyable_v&#x3C;decayed_T&#x3E;) {
+    std::array&#x3C;char, sizeof(decayed_T)&#x3E; buf{&#x27;\0&#x27;,};
 
-  if starts_with(username, &quot;😇&quot;) {
-    let_him_in();
+    const char* addressof_value = reinterpret_cast&#x3C;const char*&#x3E;(std::addressof(value));
+    std::copy(addressof_value, addressof_value + sizeof(value), buf.data());
+    stream.write(buf.data(), buf.size());
+
+  } else {
+    static_assert(std::is_same&#x3C;T, non_implemented_tag&#x3E;::value, &#x22;Unsupported type.&#x22;);
   }
-}
-          </code></pre>
-            </p>
+}</code></pre> 
           </section>
-        </section>
+         <section>
+            <h2>Faster load time</h2>
+            <img class="plain" width="auto" height="450rem" src="gfx/feature-serializationfree.png"  >
+          </section>
+      </section>
 
-        
+      <section>
         <section>
-          <section>
-            <h2>Economic Model</h2>
-            <div>
-            <table style="font-size: 0.4em;">
-              <thead>
-                <tr>
-                  <th align="center">Community</th>
-                  <th align="center">Pro</th>
-                  <th align="center">Enterprise</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td align="center" style="vertical-align: middle;">
-                    Base Features
-                  </td>
-                  <td  style="vertical-align: middle;">
-                    <ul>
-                      <li>Private repositories on github.com</li>
-                      <li>Faster build: Precompiled Headers + Precompiled header online store for common deps and platforms.</li>
-                    </ul>
-                  </td>
-                  <td  style="vertical-align: middle;">
-                    <ul>
-                      <li>Support for github enterprise</li>
-                      <li>Support for TFS servers</li>
-                      <li>Support for github enterprise</li>
-                      <li>Local Precompiled Header Dependency mirror server for custom targets.</li>
-                    </ul>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" >Free</td>
-                  <td align="center" >7€ / month by user</td>
-                  <td align="center" >5000€ / year for 20 User seat pack</td>
-                </tr>
-              </tbody>
-            </table>
-            </div>
-          </section>
-          <section>
-            <h2>Copying npmjs</h2>
-            <p>
-              <img src="gfx/npm-economic-model.png" style="max-width: 80vw; max-height: 50vh; width:auto; height:auto;"/>
-            </p>
-          </section>
-
-          <section>
-            <h2>Our market</h2>
-            <p style="font-size:0.4em;">
-              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
-            </p>
-          </section>
-          <section>
-            <h2>Dependencies</h2>
-            <p>
-            Describe something you need to do regularly when writing C++ code that you wish could be easier in some way?
-            </p>
-            <p>
-              <img src="gfx/cpp_needs_package_management.png" style="max-width: 70vw; max-height: 30vh; width:auto; height:auto;"/>
-            </p>
-            <p style="font-size:0.4em;">
-              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
-            </p>
-          </section>
-          <section>
-            <h2>Why not just dependencies ?</h2>
-            <p  style="font-size:0.4em;">Upgrade management and easy-rollout is a killer for the main development field.</p>
-            <p>
-              <img src="gfx/cpp_project_fields.png" style="max-width: 70vw; max-height: 40vh; width:auto; height:auto;"/>
-            </p>
-            <p style="font-size:0.4em;">
-              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
-            </p>
-          </section>
-          <section>
-            <h2>The rise</h2>
-            <p  style="font-size:0.45em;">Percolating in other languages.</p>
-            <p>
-              <img src="gfx/cpp_other_languages.png" style="max-width: 70vw; max-height: 40vh; width:auto; height:auto;"/>
-            </p>
-            <p style="font-size:0.4em;">
-              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
-            </p>
-          </section>
-          <section>
-            <h2>Do they have money ?</h2>
-            <p  style="font-size:0.45em;">They do.</p>
-            <p>
-              <img src="gfx/cpp_dev_use.png" style="max-width: 70vw; max-height: 40vh; width:auto; height:auto;"/>
-            </p>
-            <p style="font-size:0.4em;">
-              Source: <i>C++ Developer Survey "Lite": 2018-02</i>, 3200 respondents.
-            </p>
-          </section>
-          <section>
-            <h2>We can do it.</h2>
-            <p>
-              <ul>
-              <li>npm, Inc. is a company founded in 2014.  Its executive team is:</li>
-                <ul>
-                  <li><p>Isaac Z. Schlueter, CEO</p></li>
-                  <li><p>Laurie Voss, COO</p></li>
-                  <li><p>CJ Silverio, CTO</p></li>
-                </ul>
-              </ul>
-            </p>
-          </section>
+          <h1>The most awesome C++17 Feature</h1>
         </section>
 
         <section>
-          <section>
-            <h2>Roadmap</h2>
-            <p>
-              Release 1 planned by Mid of June on the basis of inglued.
-            </p>
-            <p>
-              The Roadmap is easy and clear, there is nothing <b>unknown</b>. <a href="https://git.lecbna.org/daminetreg/inglued/blob/develop/ROADMAP.md" target="_blank">See here</a>.
-            </p>
-          </section>
-          <section>
-            <h2>nxxm needs your help</h2>
-            <ul>
-              <li>We can release early and fast: Mid of June.</li>
-              <li>We can dogfood the tool then : </li>
-              <ul>
-                <li>Looking for contract customers: 20%.</li>
-                <li>contract work using the tool: 40%.</li>
-                <li>improve the tool: 40%.</li>
-              </ul>
-              <li>While no-contract we can build-up slight.li further.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>It's what the devs want</h2>
-            <ul>
-              <li>There already is 7 stars on inglued, with <b>zero-marketing.</b></li>
-              <li>Neither Hunter, Conan nor Vcpkg are really getting used.</li>
-              <li>Because it's easy &amp; programming language knowledge suffice.</li>
-            </ul>
-          </section>
+          <h2>True Heterogeneous containers are now possible</h2>
+          <ul>
+            <li>std::vector&lt;std::variant&lt; ... &gt;&gt; : most of the time the best solution</li>
+            <li>But with template variables we can go further!</li>
+          </ul>
         </section>
-
         <section>
-          <h2>You are welcome</h2>
-          <p>
-            This is a starting point for cashing-in.
-          </p>
-          <p>
-            It is the WebAssembly deps manager...
-          </p>
-        </section>
+          <h2>Static Typing doesn't mean less flexibility</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">struct heterogeneous_container
+{
 
-      </div>
+  template&lt;class T&gt;
+  void push_back(const T&amp; _t) {
+    items&lt;T&gt;[this].push_back(_t);
+  }
+
+  private:
+  template&lt;class T&gt;
+  static std::unordered_map&lt;const heterogeneous_container*, std::vector&lt;T&gt;&gt; items;
+};
+
+struct user_defined { /* ... */ };
+
+void main() {
+  heterogeneous_container c;
+  
+  c.push_back(42);
+  c.push_back(&quot;Hello&quot;s);
+  c.push_back(user_defined{});
+  c.push_back(&#39;A&#39;);
+  c.push_back(4.00f);
+}</code></pre>
+    </section>
+    <section>
+      <h2>An efficient mechanism to map to Javascript dynamicity</h2>
+      <ul>
+        <li>Javascript Array, Dictionaries could all be represented</li>
+        <li>Credits to Andy G's : <a href="https://bit.ly/2Ik7GsF">https://bit.ly/2Ik7GsF</a></li>
+      </ul>
+    </section>
+
+    </section>
+
+    <section>
+      <h2>Join us to improve the Web</h2>
+      <h4>Available Open Source &amp; Commercial now for Windows, macOS, Linux &amp; WebAssembly!<h4>
+      <p>
+        <img class="plain" width="auto" height="300rem" src="gfx/qrcode-nxxm.png"  >
+        <img class="plain" width="auto" height="300rem" src="gfx/logo_big.png"  >
+      </p>
+      <p>
+        <a href="https://nxxm.github.io/">https://nxxm.github.io/</a>
+      </p>
+    </section>
+
+     </div>
 
     </div>
 
