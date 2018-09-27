@@ -266,7 +266,7 @@
           </section>
           
           <section>
-            <h2>The TypeScript hype</h2>
+            <h2>TypeScript</h2>
             <p class="fragment"><span style="color:#13DAEC;">Key selling point</span>: Javascript that scales.</span>
 
             <div class="fragment">
@@ -293,7 +293,7 @@
 
           <section>
             <h2>Can we make some room for C++ ?</h2>
-            <pre style="font-size:0.4em;"><code class="html">&lt;script type=&quot;text/c++&quot;&gt;</code><code class="c++">  #include &lt;belle/vue/dom.hxx&gt;
+            <pre style="font-size:0.4em;"><code class="html">&lt;script type=&quot;text/c++&quot;&gt;</code><code class="cpp">  #include &lt;belle/vue/dom.hxx&gt;
   #include &lt;belle/vue/fx.hxx&gt;
 
   int main() {
@@ -329,11 +329,102 @@
             <iframe id="replace_ts_with_cpp" style="width:150rem; height:55vh;" src="http://127.0.0.1:8181/00-typescript/index.html"></iframe> 
 
           </section>
+         </section>
+
+        <section>
 
           <section>
-            <h2>Web Development until today in C++</h2>
+            <h1>WebServices with WebAssembly</h1>
+          </section>
+
+          <section>
+            <h2>Getting some REST</h2>
             <ul>
-              <li>Mostly Backends</li>
+              <li>CRUD operations on URI addressed entities</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>REST in Javascript</h2>
+          <pre style="font-size:0.4em;"><code class="js">app.get('/user/:id', function(req, res) {
+  res.send('user ' + req.params.id);
+});
+            
+app.listen(80);</code></pre>
+            <p class="fragment">Does anybody care about the :id type ?</p>
+            <p class="fragment">Whatever is valid : <span style="color:#13DAEC;" >/user/43</span> or <span style="color:#13DAEC;" >/user/banana</span></p>
+          </section>
+
+          <section>
+            <h2>REST in C++</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">app.GET(&quot;/user&quot;, [](session&amp;&amp; session, std::size_t id) { 
+  session.response.write(&quot;user &quot;s + std::to_string(id));
+}); 
+
+app.listen(80);</code></pre>
+            <p class="fragment">Will match : <span style="color:#13DAEC;" >/user/43</span> and only valid unsigned integer values</p>
+          </section>
+
+          <section>
+            <h2>REST url argument parser</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">namespace qi = boost::spirit::qi;
+namespace ct = boost::callable_traits;
+using namespace boost::mp11;
+
+template&lt;class F&gt;
+void GET(const std::string& route, F&& functor) {
+  mp_remove&lt;ct::args_t&lt;F&gt;, session&amp;&amp;&gt; args_parsed;
+
+  auto fail = false;
+  auto raw = splitted_args.begin();
+
+  tuple_for_each(args_parsed, [&amp](auto&amp; result) {
+    if (fail) return;
+
+    fail = !qi::parse(raw-&gt;begin(), raw-&gt;end(), qi::auto_, result);
+
+    ++raw;
+  });
+
+  if (!fail) {
+    std::apply(functor, std::tuple_cat(std::make_tuple(session {}), args_parsed));
+  }
+  
+}</code></pre>
+          </section>
+
+        </section>
+
+
+        <section>
+
+          <section>
+            <h1>Performance Measurement</h1>
+          </section>
+
+         <section>
+            <h2>Performance : calling the browser</h2>         
+            <pre style="font-size:0.4em;"><code class="cpp">  void test_cpp() {
+    auto element = belle::vue::get_element_by_id(&quot;insert_here&quot;);
+    
+    std::string text = fmt::format(&quot;Computing the WebAssembly answer {:d}&quot;, 43);
+    element.innerHTML(text);
+  }</code></pre>
+            <p>vs</p>
+            <pre style="font-size:0.4em;"><code class="js">  function test_js() {
+    var element = document.getElementById(&quot;insert_here&quot;);
+
+    var string_answer = &quot;Computing the Javascript answer &quot; + answer;
+    element.innerHTML = string_answer; 
+  }</code></pre>
+
+          </section>
+
+
+          <section>
+            <h2>Building Web Service</h2>
+            <ul>
+              <li></li>
               <li>Highly Available Backends</li>
               <li>People turn their webservices into C++ when they get victims of their success</li>
             </ul>
