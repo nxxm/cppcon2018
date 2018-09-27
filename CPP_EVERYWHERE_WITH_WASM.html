@@ -69,6 +69,13 @@
 
         <section>
           <section>
+            <h1>WebAssembly Primer</h2>
+            <p>
+            </p>
+
+          </section>
+
+          <section>
             <h2>WebAssembly</h2>
 
             <ul>
@@ -79,7 +86,8 @@
 
           </section>
           <section>
-            <h2>v1.0 available everywhere</h2>
+            <h2>w3c open standard</h2>
+            <h3>available everywhere in v1.0</h3>
             <p>
               <img class="plain" src="gfx/edge.svg" width="96px">
               <img class="plain" src="gfx/firefox.svg" width="96px">
@@ -89,12 +97,7 @@
             </p>
 
           </section>
-          <section>
-            <h2>WebAssembly Primer</h2>
-            <p>
-            </p>
 
-          </section>
           <section>
             <h2>Portable Binary instructions</h2>
 
@@ -121,9 +124,9 @@
 
             <h2>WASM Module structure</h2>
             <p>
-              <pre><code class="html">&lt;script type=&quot;text/c++&quot;&gt;</code><code class="c++">  int main() {
-    return 43;
-  }</code><code class="html">&lt;/script&gt;</code></pre>
+              <pre><code class="c++">int main() {
+  return 43;
+}</code></pre>
             </p>
           </section>
 
@@ -189,16 +192,158 @@
           <section>
             <h2>Portable yet Native</h2>
             <img class="plain responsive" src="gfx/wasm-streaming-compilation.png">
+          </section>
+
+          <section>
+            <h2>WASM Runtime</h2>
+          </section>
+
+          <section>
+            <h2>WASM Runtime</h2>
+            <ul>
+              <li>Native speed, no emulation</li>
+              <li>C++ Heap &amp; Stack is allocated in a contiguous memory segment</li>
+              <li>No Garbage Collection: Memory management as usual</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>WASM Runtime: No Garbage Collection</h2>
+            <img class="plain" style="height: 13em; width:auto;" src="gfx/wasm-indirect-call.svg">
+          </section>
+
+          <section>
+            <h2>WASM Runtime: WASM 2.0 ?</h2>
+            <img class="plain" style="height: 13em; width:auto;" src="gfx/wasm-indirect-direct-call.svg">
+          </section>
+
+          <section>
+            <h2>WASM Runtime</h2>
+            <p><img style="vertical-align:middle; height: 3em; width: auto;" src="gfx/qrcode-cppcon2014-chadaustin.png"></p>
+            <p style="font-style:italic">CppCon 2014: <span style="color:#13DAEC;" >Chad Austin</span> "Embind and Emscripten: Blending C++11, JavaScript, and the Web Browser"</p>
+          </section>
+
+          <section>
+            <h2>WASM Runtime: Multithreading</h2>
+            <ul>
+              <li>pthreads has been implemented and works</li>
+              <li class="fragment">but is based on SharedArrayBuffer...</li>
+            </ul>
+            <img class="fragment plain" style="height: 13em; width:auto;" src="gfx/spectre.min.svg">
+          </section>
+
         </section>
 
         <!-- Example of nested vertical slides -->
         <section>
           <section>
-            <h2>C++ Builds: Arts and Crafts</h2>
+            <h1>Web Development</h2>
+            <p>
+            </p>
+
+          </section>
+          <section>
+            <h2>The Javascript rise</h2>
             <ul>
-              <li>Meta Build Systems failed simplifying builds.</li>
-              <li>Continuous Integration config files : Jenkinsfile, Travis-CI, AppVeyor.</li>
-              <li>Hours of development time lost in writing recipes.</li>
+              <li>Javascript is a dynamically typed language</li>
+              <li>C++ is a statically typed language</li>
+              <li class="fragment">Two irreconcilable worlds ?</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Javascript &amp; C++</h2>
+            <ul>
+              <li >They share one key philosophy...</li>
+              <li class="fragment">Openness, Flexibility &amp; Extensibility</li>
+            </ul>
+            <div class="fragment">
+              <p style="font-style:italic;">
+                Neither Bjarne Stroustrup nor Brendan Eich wanted their language to be limited to what they could imagine.
+              </p>
+              <pre style="display:inline;"><code style="display:inline;" class="js">Object.prototype ===</code></pre><pre style="display:inline;"><code style="display:inline;" class="cpp">template &lt;class T&gt;</code></pre>
+            </div>
+
+          </section>
+          
+          <section>
+            <h2>The TypeScript hype</h2>
+            <p class="fragment"><span style="color:#13DAEC;">Key selling point</span>: Javascript that scales.</span>
+
+            <div class="fragment">
+              <p style="font-style:italic; text-align:center; font-size: 0.7em;">Types enable JavaScript developers to use [...] practices like static checking and code refactoring [...].</p>
+
+              <p>https://www.typescriptlang.org/</p>
+            </div>
+
+          </section>
+
+          <section>
+            <h2>Wait Types ? Static Checking ?</h2>         
+            <ul>
+              <li>Isn't C++ all about this ?</li>
+              <li>Could we use it to make Web Apps that scales ?</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Can we make some room for C++ ?</h2>
+            <iframe style="width:150rem; height:55vh;" src="../demo/00-typescript/index.html"></iframe> 
+
+          </section>
+
+          <section>
+            <h2>Can we make some room for C++ ?</h2>
+            <pre style="font-size:0.4em;"><code class="html">&lt;script type=&quot;text/c++&quot;&gt;</code><code class="c++">  #include &lt;belle/vue/dom.hxx&gt;
+  #include &lt;belle/vue/fx.hxx&gt;
+
+  int main() {
+
+    using namespace belle::vue;
+
+    auto banner_ts = get_element_by_id(&quot;banner_ts&quot;);
+    auto banner_cpp = get_element_by_id(&quot;banner_cpp&quot;);
+    
+    fx::fade_out(banner_ts, [=]() mutable {
+
+      banner_ts.setAttribute(&quot;style&quot;, &quot;display:none;&quot;);
+      banner_cpp.setAttribute(&quot;style&quot;, &quot;display:visible;&quot;);
+
+      fx::fade_in(banner_cpp);
+
+    });
+      
+
+    return 0;
+  }</code><code class="html">&lt;/script&gt;</code></pre>
+          </section>
+
+          <section>
+  <script type="text/javascript">
+    function fn_replace_ts_with_cpp() {
+      document.getElementById('replace_ts_with_cpp').src='http://127.0.0.1:8181/00-typescript/build/wasm-cxx17/bin/indexpp.html';
+        //../demo/00-typescript/build/wasm-cxx17/bin/indexpp.html';
+    }
+  </script>
+            <h2><a href="javascript:fn_replace_ts_with_cpp()">Make some room for C++</a></h2>
+
+            <iframe id="replace_ts_with_cpp" style="width:150rem; height:55vh;" src="http://127.0.0.1:8181/00-typescript/index.html"></iframe> 
+
+          </section>
+
+          <section>
+            <h2>Web Development until today in C++</h2>
+            <ul>
+              <li>Mostly Backends</li>
+              <li>Highly Available Backends</li>
+              <li>People turn their webservices into C++ when they get victims of their success</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Why wouldn't we write Web Apps in C++ more often ?</h2>
+            <ul>
+              <li>Has a quite other expressiveness than TypeScript</li>
+              <li>Highly Available Backends</li>
+              <li>People turn their webservices into C++ when they get victims of their success</li>
             </ul>
           </section>
           <section>
