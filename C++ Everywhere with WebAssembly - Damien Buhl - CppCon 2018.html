@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>C++ Everywhere with WebAssembly</title>
+
+    <meta name="description" content="What modern C++ has to offer to the web !">
+    <meta name="author" content="Damien Buhl (alias daminetreg)">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <!--<script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>-->
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style>
+    .container{
+        display: flex;
+    }
+    .col{
+        flex: 1;
+    }
+
+    img .responsive {
+        width: 100%;
+        height: auto;
+    }
+
+    .logo {
+      position: absolute;
+      top: 3em;
+      right: 3em;
+    }
+
+    .qrcode {
+      position: absolute;
+      top: 3em;
+      left: 3em;
+    }
+    </style>
+
+
+  </head>
+
+  <body>
+    <div class="qrcode">
+      <img class="plain" width="auto" height="100rem" src="gfx/qrcode-nxxm.png">
+    </div>
+    <div class="logo">
+      <img class="plain" width="auto" height="100rem" src="gfx/logo_big.png"  >
+      <img style="opacity: 0.8;" width="auto" height="100rem" src="gfx/cppcon.png"  >
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h2>C++ Everywhere with</h2>
+          <h1>WebAssembly</h1>
+          <!--
+          <h3><span style="color:#13DAEC;" >N</span>ot a C<span style="color:#13DAEC;" >++</span> Package <span style="color:#13DAEC;" >M</span>anager</h3>
+          -->
+          <p>
+            <img class="plain" width="auto" height="200rem" src="gfx/logo_big.png"  >
+          </p>
+          <h4>GitHub Powered, WebAssembly Ready, C++ dependencies &amp; upgrade manager</h4>
+          <p>
+            <small>Damien Buhl (alias daminetreg) at <a href="https://nxxm.github.io/">nxxm.github.io</a></small>
+          </p>
+        </section>
+
+        <section>
+          <section>
+            <h1>WebAssembly Primer</h2>
+            <p>
+            </p>
+
+          </section>
+
+          <section>
+            <h2>WebAssembly</h2>
+
+            <ul>
+              <li>Binary instruction format</li>
+              <li>Stack based <span style="color:#13DAEC;" >"vm"</span></li>
+              <li>Enables C++ web <span style="color:#13DAEC;" >browser</span> &amp; <span style="color:#13DAEC;" >server</span> apps</li>
+            </ul>
+
+          </section>
+          <section>
+            <h2>w3c open standard</h2>
+            <h3>available everywhere in v1.0</h3>
+            <p>
+              <img class="plain" src="gfx/edge.svg" width="96px">
+              <img class="plain" src="gfx/firefox.svg" width="96px">
+              <img class="plain" src="gfx/chrome.svg" width="96px">
+              <img class="plain" src="gfx/safari_96x96.png" width="96px">
+              <img class="plain" src="gfx/nodejs_logo.svg" width="192px">
+            </p>
+
+          </section>
+
+          <section>
+            <h2>Portable Binary instructions</h2>
+
+            <ul>
+              <li>Small files</li>
+              <li>Fast decoding</li>
+              <li>Reduced memory usage</li>
+              <li>The syntheis &amp; evolution of asm.js &amp; PNaCl</li>
+            </ul>
+          </section>
+          <section>
+            <h2>WASM Module</h2>
+
+            <ul>
+              <li><span style="color:#13DAEC;">PE</span> or <span style="color:#13DAEC;">Elf</span> for the Web.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>WASM Module structure</h2>
+          </section>
+
+          <section>
+
+            <h2>WASM Module structure</h2>
+            <p>
+              <pre><code class="c++">int main() {
+  return 43;
+}</code></pre>
+            </p>
+          </section>
+
+          <section>
+
+            <h2>WASM Module structure</h2>
+            <p>~158 bytes</p>
+            <div style="width:25.2em;">
+              <pre><code class="">00 61 73 6d 01 00 00 00  01 08 02 60 00 00 60 00  |.asm.......`..`.|
+01 7f 03 03 02 00 01 04  05 01 70 01 01 01 05 03  |..........p.....|
+01 00 02 06 15 03 7f 01  41 80 88 04 0b 7f 00 41  |........A......A|
+80 88 04 0b 7f 00 41 80  08 0b 07 2d 04 05 5f 6d  |......A....-.._m|
+61 69 6e 00 01 06 6d 65  6d 6f 72 79 02 00 0b 5f  |ain...memory..._|
+5f 68 65 61 70 5f 62 61  73 65 03 01 0a 5f 5f 64  |_heap_base...__d|
+61 74 61 5f 65 6e 64 03  02 0a 09 02 02 00 0b 04  |ata_end.........|
+00 41 2b 0b 00 28 04 6e  61 6d 65 01 1a 02 00 11  |.A+..(.name.....|
+5f 5f 77 61 73 6d 5f 63  61 6c 6c 5f 63 74 6f 72  |__wasm_call_ctor|
+73 01 04 6d 61 69 6e 02  05 02 00 00 01 00        |s..main.......  |</code></pre>
+            </div>
+          </section>
+
+
+
+
+
+          <section>
+            <h2>WASM Module structure</h2>
+
+            <div class="container">
+              <div  style="display:inline-block; z-index:10;">
+                <img class="plain" width="auto" height="500rem" src="gfx/wasm-module-structure-brief.png"  >
+              </div>
+
+              <div  height="500rem" style="display:inline-block; position:relative;left:-4rem; width:50rem;">
+<pre><code class="wast" style="font-size: 1rem;">(module
+
+  (type (;2;) (func (result i32)))
+
+
+  (import "env" "getTotalMemory" (func (;1;) (type 2)))
+
+
+  (func (;21;) (type 2) (result i32)
+    i32.const 43
+    return)
+
+  (export "_main" (func 21))
+  
+  
+  (data (i32.const 1024) "\05\c0\de\00\be\e0 ... ")
+  
+
+
+)
+</code></pre> 
+
+
+              </div>
+            </div>
+
+          </section>
+
+          <section>
+            <h2>Portable yet Native</h2>
+            <img class="plain responsive" src="gfx/wasm-streaming-compilation.png">
+          </section>
+
+          <section>
+            <h2>WASM Runtime</h2>
+          </section>
+
+          <section>
+            <h2>WASM Runtime</h2>
+            <ul>
+              <li>Native speed, no emulation</li>
+              <li>C++ Heap &amp; Stack is allocated in a contiguous memory segment</li>
+              <li>No Garbage Collection: Memory management as usual</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>WASM Runtime: No Garbage Collection</h2>
+            <img class="plain" style="height: 13em; width:auto;" src="gfx/wasm-indirect-call.svg">
+          </section>
+
+          <section>
+            <h2>WASM Runtime: WASM 2.0 ?</h2>
+            <img class="plain" style="height: 13em; width:auto;" src="gfx/wasm-indirect-direct-call.svg">
+          </section>
+
+          <section>
+            <h2>WASM Runtime</h2>
+            <p><img style="vertical-align:middle; height: 3em; width: auto;" src="gfx/qrcode-cppcon2014-chadaustin.png"></p>
+            <p style="font-style:italic">CppCon 2014: <span style="color:#13DAEC;" >Chad Austin</span> "Embind and Emscripten: Blending C++11, JavaScript, and the Web Browser"</p>
+          </section>
+
+          <section>
+            <h2>WASM Runtime: Multithreading</h2>
+            <ul>
+              <li>pthreads has been implemented and works</li>
+              <li class="fragment">but is based on SharedArrayBuffer...</li>
+            </ul>
+            <img class="fragment plain" style="height: 13em; width:auto;" src="gfx/spectre.min.svg">
+          </section>
+
+        </section>
+
+        <!-- Example of nested vertical slides -->
+        <section>
+          <section>
+            <h1>Web Development</h2>
+            <p>
+            </p>
+
+          </section>
+          <section>
+            <h2>The Javascript rise</h2>
+            <ul>
+              <li>Javascript is a dynamically typed language</li>
+              <li>C++ is a statically typed language</li>
+              <li class="fragment">Two irreconcilable worlds ?</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Javascript &amp; C++</h2>
+            <ul>
+              <li >They share one key philosophy...</li>
+              <li class="fragment">Openness, Flexibility &amp; Extensibility</li>
+            </ul>
+            <div class="fragment">
+              <p style="font-style:italic;">
+                Neither Bjarne Stroustrup nor Brendan Eich wanted their language to be limited to what they could imagine.
+              </p>
+              <pre style="display:inline;"><code style="display:inline;" class="js">Object.prototype ===</code></pre><pre style="display:inline;"><code style="display:inline;" class="cpp">template &lt;class T&gt;</code></pre>
+            </div>
+
+          </section>
+          
+          <section>
+            <h2>TypeScript</h2>
+            <p class="fragment"><span style="color:#13DAEC;">Key selling point</span>: Javascript that scales.</span>
+
+            <div class="fragment">
+              <p style="font-style:italic; text-align:center; font-size: 0.7em;">Types enable JavaScript developers to use [...] practices like static checking and code refactoring [...].</p>
+
+              <p>https://www.typescriptlang.org/</p>
+            </div>
+
+          </section>
+
+          <section>
+            <h2>Wait Types ? Static Checking ?</h2>         
+            <ul>
+              <li>Isn't C++ all about this ?</li>
+              <li>Could we use it to make Web Apps that scales ?</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Can we make some room for C++ ?</h2>
+            <iframe style="width:150rem; height:55vh;" src="demo/00-typescript/index.html"></iframe> 
+
+          </section>
+
+          <section>
+            <h2>Can we make some room for C++ ?</h2>
+            <pre style="font-size:0.4em;"><code class="html">&lt;script type=&quot;text/c++&quot;&gt;</code><code class="cpp">  #include &lt;belle/vue/dom.hxx&gt;
+  #include &lt;belle/vue/fx.hxx&gt;
+
+  int main() {
+
+    using namespace belle::vue;
+
+    auto banner_ts = get_element_by_id(&quot;banner_ts&quot;);
+    auto banner_cpp = get_element_by_id(&quot;banner_cpp&quot;);
+    
+    fx::fade_out(banner_ts, [=]() mutable {
+
+      banner_ts.setAttribute(&quot;style&quot;, &quot;display:none;&quot;);
+      banner_cpp.setAttribute(&quot;style&quot;, &quot;display:visible;&quot;);
+
+      fx::fade_in(banner_cpp);
+
+    });
+      
+
+    return 0;
+  }</code><code class="html">&lt;/script&gt;</code></pre>
+          </section>
+
+          <section>
+  <script type="text/javascript">
+    function fn_replace_ts_with_cpp() {
+      document.getElementById('replace_ts_with_cpp').src='demo/00-typescript/build/wasm-cxx17/bin/indexpp.html';
+        //../demo/00-typescript/build/wasm-cxx17/bin/indexpp.html';
+    }
+  </script>
+            <h2><a href="javascript:fn_replace_ts_with_cpp()">Make some room for C++</a></h2>
+
+            <iframe id="replace_ts_with_cpp" style="width:150rem; height:55vh;" src="demo/00-typescript/index.html"></iframe> 
+
+          </section>
+         </section>
+
+        <section>
+
+          <section>
+            <h1>WebServices with WebAssembly</h1>
+          </section>
+
+          <section>
+            <h2>Getting some REST</h2>
+            <ul>
+              <li>CRUD operations on URI addressed entities</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>REST in Javascript</h2>
+          <pre style="font-size:0.4em;"><code class="js">app.get('/user/:id', function(req, res) {
+  res.send('user ' + req.params.id);
+});
+            
+app.listen(80);</code></pre>
+            <p class="fragment">Does anybody care about the :id type ?</p>
+            <p class="fragment">Whatever is valid : <span style="color:#13DAEC;" >/user/43</span> or <span style="color:#13DAEC;" >/user/banana</span></p>
+          </section>
+
+          <section>
+            <h2>REST argument parser in C++</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">namespace qi = boost::spirit::qi;
+namespace ct = boost::callable_traits;
+using namespace boost::mp11;
+
+template&lt;class F&gt;
+void GET(const std::string& route, F&& functor) {
+  mp_remove&lt;ct::args_t&lt;F&gt;, session&amp;&amp;&gt; args_parsed;
+
+  auto fail = false;
+  auto raw = splitted_args.begin();
+
+  tuple_for_each(args_parsed, [&amp](auto&amp; result) {
+    if (fail) return;
+
+    fail = !qi::parse(raw-&gt;begin(), raw-&gt;end(), qi::auto_, result);
+
+    ++raw;
+  });
+
+  if (!fail) {
+    std::apply(functor, std::tuple_cat(std::make_tuple(session {}), args_parsed));
+  }
+  
+}</code></pre>
+          </section>
+
+        <section>
+          <h2>Let's see the following in action</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">app.GET(&#x22;/add&#x22;, [&#x26;](bete::session&#x26;&#x26; session, 
+    std::string name, size_t min, size_t max, size_t avg) { 
+
+  datamodel-&#x3E;benchmarks-&#x3E;push_back({name, min, max, avg});
+
+  session.response.write(&#x22;Added : &#x22;s + name 
+      + &#x22;with min=&#x22;s + std::to_string(min) 
+      + &#x22;, max=&#x22;s + std::to_string(max) 
+      + &#x22;, avg=&#x22;s + std::to_string(avg) + &#x22;.&#x22;
+      );
+
+});
+
+app.listen(80);</code></pre>
+          <p class="fragment">
+          <a href="http://127.0.0.1:8787/add/added_via_REST_service/1/2/4" target="_blank">GET /add/added_via_REST_service/1/2/4</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>But adding to what ?</h2>
+          <ul>
+            <li>To an Observable datatype</li>
+            <li>Simulating a bit of Aspect Oriented Programming in C++</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>belle::vue::observable</h2>
+<pre style="font-size:0.4em;"><code class="cpp">template&#x3C;class T&#x3E;
+struct observable {
+  struct proxy {
+
+    // ...
+
+    T * proxied; 
+      
+    ~proxy () {
+      for (auto&#x26; obs : observers_) { 
+        obs(*proxied); 
+      }
+      
+    }
+
+  };
+
+  proxy operator -&#x3E; () {
+     return proxy (observers_, std::addressof(proxied));
+  }
+
+  T* operator -&#x3E; () const {
+     return &#x26;proxied;
+  }
+
+  // ...
+};</code></pre> 
+      </section>
+
+      <section>
+        <h2>Let's define an observable datamodel</h2>
+        <pre style="font-size:0.4em;"><code class="cpp">struct benchmark {
+  std::string name{};
+  size_t min{};
+  size_t max{};
+  size_t avg{};
+};
+
+struct datamodel_t {
+  std::vector&#x3C;benchmark&#x3E; benchmarks;
+};
+
+BELLE_VUE_OBSERVABLE(benchmark, name, min, max, avg);
+BELLE_VUE_OBSERVABLE(datamodel_t, benchmarks);</code></pre>
+
+      <p class="fragment">To record WebAssembly function calls benchmarks.</p>
+      </section>
+    </section>
+
+      <section>
+          <section>
+            <h1>Performance Measurement</h1>
+          </section>
+
+         <section>
+            <h2>Performance : calling the browser</h2>         
+            <pre style="font-size:0.4em;"><code class="cpp">  void test_cpp() {
+    auto element = belle::vue::get_element_by_id(&quot;insert_here&quot;);
+    
+    std::string text = fmt::format(&quot;Computing the WebAssembly answer {:d}&quot;, (43 * i));
+    element.innerHTML(text);
+  }</code></pre>
+            <p>vs</p>
+            <pre style="font-size:0.4em;"><code class="js">  function test_js() {
+    var element = document.getElementById(&quot;insert_here&quot;);
+
+    var string_answer = &quot;Computing the Javascript answer &quot; + (43 * i);
+    element.innerHTML = string_answer; 
+  }</code></pre>
+
+          <p class="fragment">
+          <a href="http://127.0.0.1:8181/02-observable-benchmarks/build/wasm-cxx17/bin/" target="_blank">Let's Measure</a>
+          </p>
+          </section>
+
+
+          <section>
+            <h2>Performance gains by the WebAssembly &amp; C++ nature </h2>
+            <ul>
+              <li>8-bit bytes.</li>
+              <li>Addressable at a byte memory granularity.</li>
+              <li>Little-endian byte ordering.</li>
+              <li>IEEE 754-2008 32-bit and 64-bit floating point.</li>
+            </ul>
+          </section>
+          
+          <section>
+            <h2>What if we abuse std::is_trivially_copyable ? </h2>
+          </section>
+
+          <section>
+            <h3>What if we abuse std::is_trivially_copyable ? </h3>
+            <pre style="font-size:0.4em;"><code class="cpp">template&#x3C;class Stream, class T&#x3E;
+inline void write(Stream&#x26; stream, const T&#x26; value) {
+  using decayed_T = typename std::decay_t&#x3C;T&#x3E;;
+
+  if constexpr (is_fusion_sequence_v&#x3C;decayed_T&#x3E;) {
+    for_each_member(value, [&#x26;stream](const auto&#x26; member_value){
+      write(stream, member_value); 
+    }); 
+
+  } else if constexpr (is_container_v&#x3C;decayed_T&#x3E;) {
+    wasmabi::write(stream, value.size());
+    std::for_each(value.begin(), value.end(), [&#x26;stream](auto&#x26; v) {
+      wasmabi::write(stream, v); 
+    });
+    
+  } else if constexpr(std::is_trivially_copyable_v&#x3C;decayed_T&#x3E;) {
+    std::array&#x3C;char, sizeof(decayed_T)&#x3E; buf{&#x27;\0&#x27;,};
+
+    const char* addressof_value = reinterpret_cast&#x3C;const char*&#x3E;(std::addressof(value));
+    std::copy(addressof_value, addressof_value + sizeof(value), buf.data());
+    stream.write(buf.data(), buf.size());
+
+  } else {
+    static_assert(std::is_same&#x3C;T, non_implemented_tag&#x3E;::value, &#x22;Unsupported type.&#x22;);
+  }
+}</code></pre> 
+          </section>
+         <section>
+            <h2>Faster load time</h2>
+            <img class="plain" width="auto" height="450rem" src="gfx/feature-serializationfree.png"  >
+          </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>The most awesome C++17 Feature</h1>
+        </section>
+
+        <section>
+          <h2>True Heterogeneous containers are now possible</h2>
+          <ul>
+            <li>std::vector&lt;std::variant&lt; ... &gt;&gt; : most of the time the best solution</li>
+            <li>But with template variables we can go further!</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Static Typing doesn't mean less flexibility</h2>
+          <pre style="font-size:0.4em;"><code class="cpp">struct heterogeneous_container
+{
+
+  template&lt;class T&gt;
+  void push_back(const T&amp; _t) {
+    items&lt;T&gt;[this].push_back(_t);
+  }
+
+  private:
+  template&lt;class T&gt;
+  static std::unordered_map&lt;const heterogeneous_container*, std::vector&lt;T&gt;&gt; items;
+};
+
+struct user_defined { /* ... */ };
+
+void main() {
+  heterogeneous_container c;
+  
+  c.push_back(42);
+  c.push_back(&quot;Hello&quot;s);
+  c.push_back(user_defined{});
+  c.push_back(&#39;A&#39;);
+  c.push_back(4.00f);
+}</code></pre>
+    </section>
+    <section>
+      <h2>An efficient mechanism to map to Javascript dynamicity</h2>
+      <ul>
+        <li>Javascript Array, Dictionaries could all be represented</li>
+        <li>Credits to Andy G's : <a href="https://bit.ly/2Ik7GsF">https://bit.ly/2Ik7GsF</a></li>
+      </ul>
+    </section>
+
+    </section>
+
+    <section>
+      <h2>Join us to improve the Web</h2>
+      <h4>Available Open Source &amp; Commercial now for Windows, macOS, Linux &amp; WebAssembly!<h4>
+      <p>
+        <img class="plain" width="auto" height="300rem" src="gfx/qrcode-nxxm.png"  >
+        <img class="plain" width="auto" height="300rem" src="gfx/logo_big.png"  >
+      </p>
+      <p>
+        <a href="https://nxxm.github.io/">https://nxxm.github.io/</a>
+      </p>
+    </section>
+
+     </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/search/search.js', async: true },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
