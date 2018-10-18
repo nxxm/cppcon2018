@@ -1,0 +1,6 @@
+/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/sysroot/include/pre/type_traits/detail/function_traits_impl.hpp
+/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/sysroot/include/pre/type_traits/function_traits.hpp
+/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/sysroot/include/pre/functional/to_std_function.hpp
+/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/sysroot/lib/cmake/cpp-pre_type_traits/cpp-pre_type_traitsConfig.cmake
+/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/sysroot/lib/cmake/cpp-pre_type_traits/cpp-pre_type_traitsConfigVersion.cmake
+/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/sysroot/lib/cmake/cpp-pre_type_traits/cpp-pre_type_traitsTargets.cmake

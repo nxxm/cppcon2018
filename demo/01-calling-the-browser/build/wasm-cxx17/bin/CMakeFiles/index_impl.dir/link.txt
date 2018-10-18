@@ -1,0 +1,1 @@
+/home/daminetreg/.nxxm/0000000/emsdk/emscripten/1.38.11/em++ -fPIC -std=c++17 -DNDEBUG -Os  --bind -s NO_EXIT_RUNTIME=1  -Os -shared -Wl,-soname,libindex_impl.js -o libindex_impl.js @CMakeFiles/index_impl.dir/objects1.rsp @CMakeFiles/index_impl.dir/linklibs.rsp

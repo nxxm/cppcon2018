@@ -1,0 +1,74 @@
+/*<!doctype html>                                                                               
+<html>                                                                           
+<head>                                                                                        
+  <meta charset="utf-8">                                                                    
+</head>
+<body style="background:black;">
+  <div id="insert_here" style="color:white"></div>
+
+  <button id="test_cpp" />C++</button>
+  <button id="test_js" />JS</button>
+  
+<script type="text/c++">*/
+  
+  #include <chrono>
+  #include <string>
+  #include <fmt/core.h>
+
+  #include <belle/vue/dom.hxx>
+
+  int main() {
+    
+    using namespace std::string_literals;
+    using namespace belle::vue;
+
+    auto test_cpp = [](emscripten::val e) {
+      auto start = std::chrono::high_resolution_clock::now();
+      auto element = get_element_by_id("insert_here");
+      
+      std::string text;
+      for (size_t i = 0; i < 1000; ++i) {
+        text = fmt::format("Computing the WebAssembly answer {:d}", 43 * i);
+        element.innerHTML(text);
+      }
+
+      auto end = std::chrono::high_resolution_clock::now();
+      auto time = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+      auto result = element.innerHTML() + ", required : "s + std::to_string(time) + "us"s;
+      element.innerHTML(result);
+    };
+
+    get_element_by_id("test_cpp").val_.set("onclick", js::bind(test_cpp, _1));
+
+    return 0;
+  }
+/*</script>
+
+
+
+</body>
+<script type="text/javascript">
+document.getElementById("test_cpp").onclick = function (e) { Module.test_cpp() };
+
+  function test_js(e) {
+
+    var start = performance.now();
+    var element = document.getElementById("insert_here");
+
+    for (var i = 0; i < 1000; ++i) {
+      var string_answer = "Computing the Javascript answer " + (43 * i);
+      element.innerHTML = string_answer; 
+    }
+
+    var end = performance.now();
+    var time = (end - start) * 1000;
+    element.innerHTML = element.innerHTML + ", required : " + time + "us";
+  }
+
+  document.getElementById("test_js").onclick = test_js;
+</script>
+
+</html>
+
+
+*/

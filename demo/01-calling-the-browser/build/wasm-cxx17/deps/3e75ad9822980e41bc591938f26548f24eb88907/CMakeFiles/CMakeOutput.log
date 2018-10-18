@@ -1,0 +1,30 @@
+The target system is: Linux - 1 - x86
+The host system is: Linux - 4.4.0-134-generic - x86_64
+Determining if the pthread_create exist passed with the following output:
+Change Dir: /home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/deps/3e75ad9822980e41bc591938f26548f24eb88907/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_67daa/fast"
+/usr/bin/make -f CMakeFiles/cmTC_67daa.dir/build.make CMakeFiles/cmTC_67daa.dir/build
+make[1]: Entering directory '/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/deps/3e75ad9822980e41bc591938f26548f24eb88907/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_67daa.dir/CheckSymbolExists.c.o
+/home/daminetreg/.nxxm/0000000/emsdk/emscripten/1.38.11/emcc -DBOOST_ALL_NO_LIB=1  -s ERROR_ON_UNDEFINED_SYMBOLS=1 -s WASM=0   -o CMakeFiles/cmTC_67daa.dir/CheckSymbolExists.c.o   -c /home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/deps/3e75ad9822980e41bc591938f26548f24eb88907/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_67daa.js
+/home/daminetreg/.nxxm/0000000/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_67daa.dir/link.txt --verbose=1
+/home/daminetreg/.nxxm/0000000/emsdk/emscripten/1.38.11/emcc  -s ERROR_ON_UNDEFINED_SYMBOLS=1 -s WASM=0    @CMakeFiles/cmTC_67daa.dir/objects1.rsp  -o cmTC_67daa.js 
+make[1]: Leaving directory '/home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/deps/3e75ad9822980e41bc591938f26548f24eb88907/CMakeFiles/CMakeTmp'
+
+File /home/daminetreg/Documents/presentations/cppcon2018/demo/01-calling-the-browser/build/wasm-cxx17/deps/3e75ad9822980e41bc591938f26548f24eb88907/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

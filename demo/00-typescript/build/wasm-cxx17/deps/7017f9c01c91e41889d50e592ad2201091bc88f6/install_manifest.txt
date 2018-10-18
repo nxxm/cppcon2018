@@ -1,0 +1,6 @@
+/home/daminetreg/Documents/presentations/cppcon2018/demo/00-typescript/build/wasm-cxx17/sysroot/include/test/bind.html
+/home/daminetreg/Documents/presentations/cppcon2018/demo/00-typescript/build/wasm-cxx17/sysroot/include/test/example.html
+/home/daminetreg/Documents/presentations/cppcon2018/demo/00-typescript/build/wasm-cxx17/sysroot/include/js/bind.hpp
+/home/daminetreg/Documents/presentations/cppcon2018/demo/00-typescript/build/wasm-cxx17/sysroot/lib/cmake/nxxm_js-bind/nxxm_js-bindConfig.cmake
+/home/daminetreg/Documents/presentations/cppcon2018/demo/00-typescript/build/wasm-cxx17/sysroot/lib/cmake/nxxm_js-bind/nxxm_js-bindConfigVersion.cmake
+/home/daminetreg/Documents/presentations/cppcon2018/demo/00-typescript/build/wasm-cxx17/sysroot/lib/cmake/nxxm_js-bind/nxxm_js-bindTargets.cmake
