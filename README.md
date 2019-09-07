@@ -18,7 +18,7 @@ Here we list libraries part of the Bellevue effort :
 - [nxxm](https://nxxm.github.io/) : html5 files compilation, dependency and easy-build with WebAssembly.
 - [js::bind](https://github.com/nxxm/js-bind) : bind any C++ function to the Javascript Host API.
 - [xxhr](https://nxxm.github.io/xxhr) : HTTP Requests cross-platform &amp; in the Browser
-- [belle::vue](https://github.com/bellevue) : HTML5 Dom access, HTML5 view engines.
+- [belle::vue](https://github.com/nxxm/bellevue) : HTML5 Dom access, HTML5 view engines.
 - [bete](https://github.com/nxxm/bete) : WebServer, Websocket Observables Data Types
 
 
